@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    image: debian:buster
+    volumes:
+      - ./bin/:/n0stack
+      - ./sandbox/n0core:/var/lib/n0core
+    command:
+      - /n0stack/n0core
+      - serve
+      - api
+    ports:
+      - "8080:8080"
+      - "20180:20180"
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    volumes:
+      - ./n0proto.swagger.json/n0stack.swagger.json:/usr/share/nginx/html/n0stack.swagger.json
+    environment:
+      API_URL: n0stack.swagger.json
+      # BASE_URL: swagger
+
+  bff:
+    image: debian:buster
+    volumes:
+      - ./bin/:/n0stack
+    command:
+      - /n0stack/n0bff
+      - serve
+      - bff
+    ports:
+      - "8000:8080"
+    links:
+      - api
+      - swagger

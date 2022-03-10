@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option go_package = "github.com/n0stack/n0stack/n0core/pkg/api/provisioning/blockstorage;blockstorage";
+
+package n0stack.internal.n0core.provisioning.blockstorage;
+
+import "google/protobuf/empty.proto";
+
+service BlockStorageAgentService {
+  rpc CreateEmptyBlockStorage(CreateEmptyBlockStorageRequest) returns (CreateEmptyBlockStorageResponse) {}
+  rpc FetchBlockStorage(FetchBlockStorageRequest) returns (FetchBlockStorageResponse) {}
+
+  rpc DeleteBlockStorage(DeleteBlockStorageRequest) returns (google.protobuf.Empty) {}
+
+  rpc ResizeBlockStorage(ResizeBlockStorageRequest) returns (google.protobuf.Empty) {}
+
+  // rpc ResizeBlockStorageAgent(ResizeBlockStorageAgentRequest) returns (BlockStorageAgent) {}
+  // rpc MigrateBlockStorageAgent(MigrateBlockStorageAgentRequest) returns (BlockStorageAgent) {}
+}
+
+message CreateEmptyBlockStorageRequest {
+  string name = 1;
+  uint64 bytes = 2;
+}
+message CreateEmptyBlockStorageResponse{
+  string path = 3;
+}
+
+message FetchBlockStorageRequest {
+  string name = 1;
+  uint64 bytes = 2;
+
+  string source_url = 3;
+}
+message FetchBlockStorageResponse {
+  string path = 3;
+}
+
+message DeleteBlockStorageRequest {
+  string path = 3;
+}
+
+message ResizeBlockStorageRequest{
+  uint64 bytes = 2;
+  string path = 3;
+}
